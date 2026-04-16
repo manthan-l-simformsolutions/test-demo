@@ -9,7 +9,11 @@ interface Todo {
 }
 
 export default function Home() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([
+    { id: 1, text: "Learn Next.js" },
+    { id: 2, text: "Build a todo app" },
+    { id: 3, text: "Deploy to production" },
+  ]);
   const [inputValue, setInputValue] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -37,9 +41,11 @@ export default function Home() {
 
   const handleSaveEdit = (id: number) => {
     if (editValue.trim() === "") return;
-    setTodos(todos.map((todo) => 
-      todo.id === id ? { ...todo, text: editValue } : todo
-    ));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, text: editValue } : todo,
+      ),
+    );
     setEditingId(null);
     setEditValue("");
   };
@@ -55,7 +61,10 @@ export default function Home() {
     }
   };
 
-  const handleEditKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: number) => {
+  const handleEditKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    id: number,
+  ) => {
     if (e.key === "Enter") {
       handleSaveEdit(id);
     } else if (e.key === "Escape") {
@@ -66,9 +75,7 @@ export default function Home() {
   return (
     <div className="app-container">
       <main className="todo-main">
-        <h1 className="todo-title">
-          Todo List
-        </h1>
+        <h1 className="todo-title">Todo List</h1>
 
         {/* Input Section */}
         <div className="input-section">
@@ -80,10 +87,7 @@ export default function Home() {
             placeholder="Enter a new todo..."
             className="todo-input"
           />
-          <button
-            onClick={handleAddTodo}
-            className="btn btn-add"
-          >
+          <button onClick={handleAddTodo} className="btn btn-add">
             Add
           </button>
         </div>
@@ -91,15 +95,10 @@ export default function Home() {
         {/* Task List */}
         <div className="todo-list">
           {todos.length === 0 ? (
-            <p className="empty-state">
-              No todos yet. Add one to get started!
-            </p>
+            <p className="empty-state">No todos yet. Add one to get started!</p>
           ) : (
             todos.map((todo) => (
-              <div
-                key={todo.id}
-                className="todo-item"
-              >
+              <div key={todo.id} className="todo-item">
                 {editingId === todo.id ? (
                   <>
                     <input
